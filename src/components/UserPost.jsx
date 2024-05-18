@@ -1,8 +1,25 @@
-import { Avatar, Box, Flex, Image, Text } from "@chakra-ui/react"
+import { Avatar, Box, Flex, Image, Menu, MenuButton, MenuItem, MenuList, Portal, Text, useToast } from "@chakra-ui/react"
 import { BsThreeDots } from "react-icons/bs"
 import { Link } from "react-router-dom"
+import Actions from "./Actions"
+import { useState } from "react"
 
-const UserPost = () => {
+const UserPost = ({postTitle, postImg, likes, replies}) => {
+    const [liked, setLiked] = useState(false)
+    const toast = useToast()
+
+    const copyURL = () => {
+        const currentURL = window.location.href;
+        navigator.clipboard.writeText(currentURL).then(() => {
+            toast({
+                title: "Post Link Copied.",
+                status: "success",
+                duration: 3000,
+                isClosable: true,
+            })
+        })
+    };
+
     return (
         <Link to={"/zuckerberg/post/1"}>
             <Flex gap={3} mb={4} py={5}> 
@@ -45,15 +62,35 @@ const UserPost = () => {
                             <Text fontSize={"sm"} fontWeight={"bold"}>markzuckerberg</Text>
                             <Image src="/verified.png" w={4} h={4} marginLeft={1}/>
                         </Flex>
-                        <Flex gap={4} alignItems={"center"}>
+                        <Flex gap={4} alignItems={"center"} onClick={(e) => e.preventDefault()}>
                             <Text fontSize={"sm"} color={"gray.light"}>1d</Text>
-                            <BsThreeDots />
+                            <Menu>
+                                <MenuButton>
+                                    <BsThreeDots />
+                                </MenuButton>
+                                <Portal>
+                                    <MenuList bg={"gray.dark"}>
+                                        <MenuItem bg={"gray.dark"} onClick={copyURL}>Copy Link</MenuItem>
+                                    </MenuList>
+                                </Portal>
+                            </Menu>
                         </Flex>
                     </Flex>
-                    <Text fontSize={"sm"}>This is my first post.</Text>
-                    <Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
-                        <Image src="/post1.png" w={"full"} />
-                    </Box>
+
+                    <Text fontSize={"sm"}>{postTitle}</Text>
+                    {postImg && (
+                        <Box borderRadius={6} overflow={"hidden"} border={"1px solid"} borderColor={"gray.light"}>
+                            <Image src={postImg} w={"full"} />
+                        </Box>
+                    )}
+                    <Flex gap={3} my={1}>
+                        <Actions liked={liked} setLiked={setLiked}/>
+                    </Flex>
+                    <Flex gap={2} alignItems={"center"}>
+                        <Text color={"gray.light"} fontSize="sm">{replies} replies</Text>
+                        <Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"}></Box>
+                        <Text color={"gray.light"} fontSize="sm">{likes} likes</Text>
+                    </Flex>
                 </Flex>
             </Flex>
         </Link>

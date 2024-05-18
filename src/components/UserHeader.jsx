@@ -7,7 +7,7 @@ import { BsInstagram } from "react-icons/bs";
 import { CgMoreO } from "react-icons/cg";
 
 const UserHeader = () => {
-    const toast = useToast();
+    const toast = useToast()
 
     const copyURL = () => {
         const currentURL = window.location.href;
@@ -19,7 +19,7 @@ const UserHeader = () => {
                 isClosable: true,
             })
         })
-    };
+    }
 
     return <VStack gap={4} alignItems={"start"}>
         <Flex justifyContent={"space-between"} w={"full"}>
