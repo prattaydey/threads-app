@@ -24,7 +24,7 @@ const UserPost = ({postTitle, postImg, likes, replies}) => {
         <Link to={"/zuckerberg/post/1"}>
             <Flex gap={3} mb={4} py={5}> 
                 <Flex flexDirection={"column"} alignItems={"center"}>
-                    <Avatar size="md" name="Mark Zuckerberg" src="/zuck-avatar.png" />
+                    <Avatar size="md" name="Prattay Dey" src="/profilepic.jpg" />
                     <Box w="1px" h={"full"} bg="gray.light" my={2}></Box>
                     <Box position={"relative"}>
                         <Avatar
@@ -59,7 +59,7 @@ const UserPost = ({postTitle, postImg, likes, replies}) => {
                 <Flex flex={1} flexDirection={"column"} gap={2}>
                     <Flex justifyContent={"space-between"} w={"full"}>
                         <Flex w={"full"} alignItems={"center"}>
-                            <Text fontSize={"sm"} fontWeight={"bold"}>markzuckerberg</Text>
+                            <Text fontSize={"sm"} fontWeight={"bold"}>prattaydey</Text>
                             <Image src="/verified.png" w={4} h={4} marginLeft={1}/>
                         </Flex>
                         <Flex gap={4} alignItems={"center"} onClick={(e) => e.preventDefault()}>
