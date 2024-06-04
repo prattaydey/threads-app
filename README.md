@@ -21,7 +21,7 @@ This project is a web-based social media application built on the MERN (MongoDB,
 - **Node.js**: 
 
 # Images:
-<img width="1000" alt="profile.png" src="frontend/public/login.png">
+<img width="1000" alt="profile.png" src="frontend/public/profile.png">
 <img width="1000" alt="login.png" src="frontend/public/login.png">
 <img width="1000" alt="signup.png" src="frontend/public/signup.png">
 <img width="1000" alt="updateprofile.png" src="frontend/public/updateprofile.png">
