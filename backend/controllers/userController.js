@@ -2,6 +2,7 @@ import User from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
 import mongoose from "mongoose";
+import {v2 as cloudinary} from "cloudinary";
 
 
 const getUserProfile = async (req, res) => {
@@ -83,7 +84,9 @@ const loginUser = async (req, res) => {
             _id: user._id,
             username: user.username,
             name: user.name,
-            email: user.email
+            email: user.email,
+            bio: user.bio,
+			profilePic: user.profilePic,
         });
 
 
@@ -136,7 +139,9 @@ const followUnfollowUser = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    const { name, email, username, password, profilePic, bio } = req.body;
+    const { name, email, username, password, bio } = req.body;
+    let { profilePic } = req.body;
+
     const userId = req.user._id;
     try {
         let user = await User.findById(userId);
@@ -151,6 +156,17 @@ const updateUser = async (req, res) => {
             user.password = hashedPassword;
         }
 
+        if (profilePic){
+            // destroys previous uploaded profile pic
+			if (user.profilePic) {
+                // isolates image id and destroys it    
+				await cloudinary.uploader.destroy(user.profilePic.split("/").pop().split(".")[0]);
+			}
+
+			const uploadedResponse = await cloudinary.uploader.upload(profilePic);
+			profilePic = uploadedResponse.secure_url;
+		}
+
         user.name = name || user.name;
         user.email = email || user.email;
         user.username = username || user.username;
@@ -158,7 +174,11 @@ const updateUser = async (req, res) => {
         user.bio = bio || user.bio;
 
         user = await user.save();
-        res.status(200).json({ message: "User successfully updated", user });
+
+        // hide password from res object
+        user.password = null;
+        
+        res.status(200).json(  user );
 
     } catch (err) {
 		res.status(500).json({ error: err.message });
