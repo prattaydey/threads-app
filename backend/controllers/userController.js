@@ -75,7 +75,7 @@ const loginUser = async (req, res) => {
         const user = await User.findOne({ username });
         const isPassword = await bcrypt.compare(password, user?.password || "");
 
-        if (!user || !isPassword) return res.status(400).json({ message: "Invalid username or password"} );
+        if (!user || !isPassword) return res.status(400).json({ error: "Invalid username or password"} );
 
         generateTokenAndSetCookie(user._id, res);
 
@@ -110,9 +110,9 @@ const followUnfollowUser = async (req, res) => {
         const userToModify = await User.findById(id); // the one being followed/unfollowed
         const currentUser = await User.findById(req.user._id);
 
-        if (id == req.user._id.toString()) return res.status(400).json({ message: "You cannot follow/unfollow yourself" });
+        if (id == req.user._id.toString()) return res.status(400).json({ error: "You cannot follow/unfollow yourself" });
 
-        if (!userToModify || !currentUser) return res.status(400).json({ message: "User not found" });
+        if (!userToModify || !currentUser) return res.status(400).json({ error: "User not found" });
 
         const isFollowing = currentUser.following.includes(id);
 
@@ -140,7 +140,7 @@ const updateUser = async (req, res) => {
     const userId = req.user._id;
     try {
         let user = await User.findById(userId);
-        if (!user) return res.status(400).json({ message: "User not found." })
+        if (!user) return res.status(400).json({ error: "User not found." })
         
         if (req.params.id !== userId.toString())
             return res.status(400).json({ error: "You cannot update other user's profile" });
